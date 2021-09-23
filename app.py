@@ -27,9 +27,7 @@ def main():
     if img_file_buffer is not None:
             image = np.array(Image.open(img_file_buffer))
     # st.image(image, caption=f"Test", use_column_width=True,)
-    im = Image.fromarray(image)
-    im.save('images/test.jpg')
-    #cv2.imwrite('/content/yolov5/images/test.jpg', image)
+    cv2.imwrite('images/test.jpg', image)
 
     next_step = False
     if st.button('RUN'):
@@ -42,7 +40,7 @@ def main():
 
     if next_step == True:
 
-            with open('/content/yolov5/runs/detect/exp/labels/test.txt', 'r') as f:
+            with open('runs/detect/exp/labels/test.txt', 'r') as f:
                     text = f.readlines()
             bb = []
             for line in text:
@@ -53,7 +51,7 @@ def main():
                     y2 = int(s[4])
                     bb.append((x1, y1, x2, y2))
 
-    img = cv2.imread('/content/yolov5/images/test.jpg')
+    img = cv2.imread('images/test.jpg')
     cropped_images = []
     i = 0
     for box in bb:
@@ -67,7 +65,7 @@ def main():
         des = cv2.fastNlMeansDenoisingColored(scaled, None, 10, 10, 7, 15)
         cropped_images.append(des)
         st.image(des, caption=f"{x1}, {y1}, {x2}, {y2} are the bbox", use_column_width='never')
-        cv2.imwrite(f'/content/yolov5/runs/detect/exp/crp{i}.jpg', crop)
+        cv2.imwrite(f'runs/detect/exp/crp{i}.jpg', crop)
         i+=1
     
     
@@ -83,8 +81,8 @@ def main():
         fig, axs = plt.subplots(nrows=len(images), figsize=(20, 20))
         for ax, image, predictions in zip(axs, images, prediction_groups):
             keras_ocr.tools.drawAnnotations(image=image, predictions=predictions, ax=ax)
-        fig.savefig('/content/yolov5/result/res.jpg')
-        res = cv2.imread('/content/yolov5/result/res.jpg')
+        fig.savefig('result/res.jpg')
+        res = cv2.imread('result/res.jpg')
         st.image(res, caption='images of lp numbers', use_column_width='never')
 
     else:
@@ -93,11 +91,11 @@ def main():
         fig = plt.figure()
         ax = fig.add_subplot(111)
         keras_ocr.tools.drawAnnotations(image=images[0], predictions=prediction_groups[0], ax=ax)
-        fig.savefig('/content/yolov5/result/res.jpg')
-        res = cv2.imread('/content/yolov5/result/res.jpg')
+        fig.savefig('result/res.jpg')
+        res = cv2.imread('result/res.jpg')
         lp_number = [text for text, box in prediction_groups[0]]
         st.image(res, caption=f'{lp_number}', use_column_width='never')
-    delete = subprocess.call('rm -r /content/yolov5/runs', shell=True)
+    delete = subprocess.call('rm -r runs', shell=True)
 
 
 
