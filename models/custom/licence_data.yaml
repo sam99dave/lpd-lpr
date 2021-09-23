@@ -1,0 +1,10 @@
+# Parameters from here
+train: /content/images/train/ 
+val:  /content/images/val/
+test: /content/images/test/
+
+# number of classes
+nc: 1
+
+# class names
+names: ["plate"]
