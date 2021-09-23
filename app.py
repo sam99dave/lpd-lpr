@@ -27,7 +27,9 @@ def main():
     if img_file_buffer is not None:
             image = np.array(Image.open(img_file_buffer))
     # st.image(image, caption=f"Test", use_column_width=True,)
-    cv2.imwrite('/content/yolov5/images/test.jpg', image)
+    im = Image.fromarray(image)
+    im.save('images/test.jpg')
+    #cv2.imwrite('/content/yolov5/images/test.jpg', image)
 
     next_step = False
     if st.button('RUN'):
